@@ -1,0 +1,614 @@
+/* 공통 색과 기본 글꼴을 변수로 모아 두면 화면 전체를 쉽게 조정할 수 있습니다. */
+:root {
+  font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+  color: #202a27;
+  background: #f4f6f2;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  --ink: #202a27;
+  --muted: #7a8580;
+  --line: #e4e9e3;
+  --paper: #fff;
+  --green: #166b52;
+  --green-soft: #e8f4ed;
+  --lime: #c6ed72;
+  --coral: #e76d55;
+}
+
+/* padding과 border를 요소 너비 계산에 포함해 레이아웃이 넘치는 일을 줄입니다. */
+* {
+  box-sizing: border-box;
+}
+
+/* 페이지 배경, 기본 여백과 작은 격자 무늬입니다. */
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  background-color: #f4f6f2;
+  background-image: linear-gradient(rgba(34, 64, 49, .025) 1px, transparent 1px), linear-gradient(90deg, rgba(34, 64, 49, .025) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* 버튼과 입력 칸도 페이지에서 정한 글꼴을 사용합니다. */
+button,
+input,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* 상단 브랜드 바 */
+.topbar {
+  height: 62px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 max(24px, calc((100vw - 1160px) / 2));
+  color: #f8faf7;
+  background: #202a27;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.brand-mark {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  color: #202a27;
+  background: var(--lime);
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.topbar-note {
+  color: #b6c0ba;
+  font-size: 12px;
+}
+
+/* 메인 콘텐츠의 최대 너비와 좌우 여백 */
+.page-shell {
+  width: min(1160px, calc(100% - 48px));
+  margin: 0 auto;
+  padding: 38px 0 64px;
+}
+
+/* 페이지 제목과 섹션 제목의 공통 정렬 방식 */
+.page-heading,
+.section-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.page-heading {
+  margin-bottom: 23px;
+}
+
+.eyebrow {
+  margin: 0 0 7px;
+  color: var(--green);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+h1,
+h2,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  margin-bottom: 0;
+  font-size: 28px;
+  line-height: 1.25;
+}
+
+h2 {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.4;
+}
+
+.today-label,
+.section-caption {
+  margin: 0 0 2px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* 합계 세 개를 같은 너비로 나란히 배치합니다. */
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+}
+
+.summary-item {
+  min-height: 132px;
+  padding: 19px 23px 17px;
+  border-right: 1px solid var(--line);
+}
+
+.summary-item:last-child {
+  border-right: 0;
+}
+
+.summary-label {
+  margin-bottom: 12px;
+  color: #69756f;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.summary-value {
+  margin-bottom: 4px;
+  color: var(--ink);
+  font-size: 25px;
+  font-weight: 700;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.summary-monthly .summary-value {
+  color: var(--green);
+}
+
+.summary-upcoming .summary-value {
+  color: #bd553f;
+}
+
+.summary-detail {
+  margin: 0;
+  color: #8a948f;
+  font-size: 11px;
+}
+
+/* 구독 목록과 오른쪽 도구 영역의 데스크톱 기본 배치 */
+.content-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(320px, .9fr);
+  align-items: start;
+  gap: 34px;
+  margin-top: 39px;
+}
+
+.section-heading {
+  margin-bottom: 16px;
+}
+
+.section-heading .eyebrow {
+  margin-bottom: 6px;
+}
+
+.count-badge {
+  display: inline-grid;
+  min-width: 22px;
+  height: 22px;
+  place-items: center;
+  margin-left: 4px;
+  padding: 0 6px;
+  border-radius: 11px;
+  color: #55645c;
+  background: #e8ede8;
+  font-size: 11px;
+  vertical-align: 2px;
+}
+
+.subscription-list {
+  display: grid;
+  gap: 10px;
+}
+
+/* JavaScript가 구독 하나마다 아래 카드 구조를 만듭니다. */
+.subscription-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px 16px;
+  align-items: center;
+  padding: 16px 17px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+  animation: arrive .24s ease-out both;
+}
+
+.subscription-main {
+  min-width: 0;
+}
+
+.subscription-title-row,
+.subscription-meta,
+.card-actions {
+  display: flex;
+  align-items: center;
+}
+
+.subscription-title-row {
+  min-width: 0;
+  gap: 8px;
+  margin-bottom: 7px;
+}
+
+.subscription-name {
+  overflow: hidden;
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cycle-tag,
+.category-tag {
+  flex: 0 0 auto;
+  padding: 3px 7px;
+  border-radius: 4px;
+  color: #4a6557;
+  background: #edf3ee;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.subscription-meta {
+  flex-wrap: wrap;
+  gap: 6px 9px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.subscription-price {
+  margin: 0 0 5px;
+  text-align: right;
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.payment-day {
+  display: block;
+  text-align: right;
+  color: #727e77;
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+.payment-day.is-soon {
+  color: #c2523d;
+  font-weight: 700;
+}
+
+.card-actions {
+  grid-column: 1 / -1;
+  justify-content: flex-end;
+  gap: 6px;
+  padding-top: 9px;
+  border-top: 1px solid #eff2ee;
+}
+
+.icon-button {
+  min-width: 48px;
+  min-height: 30px;
+  padding: 4px 8px;
+  border: 1px solid #e4e9e3;
+  border-radius: 5px;
+  color: #55645c;
+  background: #fff;
+  font-size: 11px;
+}
+
+.icon-button:hover {
+  border-color: #9eb6a7;
+  background: #f5f8f5;
+}
+
+.icon-button.delete-button:hover {
+  border-color: #e7b5a9;
+  color: #b34f3c;
+  background: #fff8f6;
+}
+
+.empty-state {
+  padding: 30px 18px;
+  border: 1px dashed #cbd5cc;
+  border-radius: 8px;
+  color: #66736b;
+  background: rgba(255, 255, 255, .72);
+  text-align: center;
+  font-size: 13px;
+}
+
+.empty-state strong {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--ink);
+  font-size: 14px;
+}
+
+/* 추가 폼과 카테고리 비중 영역을 세로로 쌓습니다. */
+.side-column {
+  display: grid;
+  gap: 25px;
+}
+
+.form-section,
+.categories-section {
+  padding: 19px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+}
+
+.form-heading,
+.category-heading {
+  margin-bottom: 17px;
+}
+
+.field {
+  display: grid;
+  min-width: 0;
+  gap: 7px;
+  margin-bottom: 14px;
+  color: #56635c;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 11px;
+}
+
+.field input,
+.field select {
+  width: 100%;
+  min-width: 0;
+  height: 39px;
+  padding: 0 10px;
+  border: 1px solid #dce3dc;
+  border-radius: 5px;
+  outline: none;
+  color: #29342e;
+  background-color: #fff;
+  font-size: 12px;
+}
+
+.field input:focus,
+.field select:focus {
+  border-color: #68a080;
+  box-shadow: 0 0 0 3px rgba(65, 140, 100, .12);
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 3px;
+}
+
+.button {
+  min-height: 39px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.button-primary {
+  color: #f8fff9;
+  background: var(--green);
+}
+
+.button-primary:hover {
+  background: #105940;
+}
+
+.button-primary span {
+  padding-left: 5px;
+  color: var(--lime);
+  font-size: 16px;
+  vertical-align: -1px;
+}
+
+.button-quiet {
+  border: 1px solid var(--line);
+  color: #58645d;
+  background: #fff;
+}
+
+.form-status {
+  min-height: 15px;
+  margin: 8px 0 0;
+  color: var(--green);
+  font-size: 11px;
+}
+
+.form-status.is-error {
+  color: #b34f3c;
+}
+
+/* 카테고리 이름, 금액, 진행 막대의 표시 방식 */
+.category-breakdown {
+  display: grid;
+  gap: 15px;
+}
+
+.category-row {
+  display: grid;
+  gap: 7px;
+}
+
+.category-label-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  color: #59655f;
+  font-size: 11px;
+}
+
+.category-label-row strong {
+  color: #28332d;
+  font-weight: 600;
+}
+
+.category-label-row span:last-child {
+  color: #7f8983;
+  white-space: nowrap;
+}
+
+.category-track {
+  height: 7px;
+  overflow: hidden;
+  border-radius: 4px;
+  background: #edf0ed;
+}
+
+.category-fill {
+  height: 100%;
+  min-width: 3px;
+  border-radius: inherit;
+  background: #3c9470;
+  transition: width .3s ease;
+}
+
+.category-fill.color-1 { background: #e77a5e; }
+.category-fill.color-2 { background: #d5a63b; }
+.category-fill.color-3 { background: #5a91a1; }
+.category-fill.color-4 { background: #84a94c; }
+.category-fill.color-5 { background: #9073a5; }
+
+.category-empty {
+  margin: 0;
+  color: #87918b;
+  font-size: 12px;
+}
+
+/* hidden 속성이 있는 취소 버튼은 화면에 표시하지 않습니다. */
+[hidden] {
+  display: none !important;
+}
+
+/* 새 구독 카드가 목록에 나타날 때 짧게 표시하는 애니메이션입니다. */
+@keyframes arrive {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 태블릿에서는 좌우 여백과 목록/도구 사이 간격을 줄입니다. */
+@media (max-width: 800px) {
+  .content-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(280px, .85fr);
+    gap: 20px;
+  }
+
+  .page-shell {
+    width: min(100% - 36px, 700px);
+  }
+}
+
+/* 작은 화면에서는 입력 도구를 목록 아래로 옮깁니다. */
+@media (max-width: 650px) {
+  .topbar {
+    height: 56px;
+    padding: 0 18px;
+  }
+
+  .page-shell {
+    width: calc(100% - 32px);
+    padding-top: 28px;
+  }
+
+  .content-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 29px;
+    margin-top: 29px;
+  }
+
+  .side-column {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* 375px 휴대폰에서도 글자와 요약 칸이 겹치지 않도록 더 촘촘히 조정합니다. */
+@media (max-width: 430px) {
+  .topbar-note {
+    font-size: 11px;
+  }
+
+  .page-shell {
+    width: calc(100% - 28px);
+    padding-top: 24px;
+  }
+
+  h1 {
+    font-size: 25px;
+  }
+
+  .today-label {
+    font-size: 10px;
+  }
+
+  .summary-item {
+    min-height: 115px;
+    padding: 15px 11px 13px;
+  }
+
+  .summary-label {
+    min-height: 28px;
+    margin-bottom: 8px;
+    font-size: 10px;
+    line-height: 1.4;
+  }
+
+  .summary-value {
+    font-size: clamp(14px, 4.5vw, 20px);
+  }
+
+  .summary-detail {
+    font-size: 9px;
+    line-height: 1.35;
+  }
+
+  .section-caption {
+    font-size: 10px;
+  }
+
+  .subscription-card {
+    padding: 14px 12px;
+    gap: 10px;
+  }
+
+  .form-section,
+  .categories-section {
+    padding: 16px 14px;
+  }
+}
+
+/* 사용자가 운영체제에서 애니메이션 줄이기를 선택했으면 효과를 최소화합니다. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+  }
+}
